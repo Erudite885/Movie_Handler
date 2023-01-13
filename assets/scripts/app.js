@@ -6,6 +6,8 @@ const confirmAddMovieBtn = cancelAddMovieBtn.nextElementSibling;
 const userInputs = addMovieModal.querySelectorAll("input");
 // const userInputs = addMovieModal.getElementsByTagName('input');
 
+const movies = [];
+
 const toggleBackDrop = () => {
   backDrop.classList.toggle("visible");
 };
@@ -20,8 +22,15 @@ const backDropClickHandler = () => {
   toggleMovieModalHandler();
 };
 
+const clearMovieInputHandler = () => {
+  for (const userInput of userInputs) {
+    userInput.value = "";
+  }
+};
+
 const cancelAddMovieHandler = () => {
   toggleMovieModal();
+  clearMovieInputHandler();
 };
 
 const addMovieHandler = () => {
@@ -38,6 +47,16 @@ const addMovieHandler = () => {
   ) {
     alert("Please Enter Valid Values (RATING between 1 and 5)");
   }
+
+  const newMovies = {
+    title: titleVal,
+    img: imgUrlVal,
+    rating: ratingVal,
+  };
+  movies.push(newMovies);
+  console.log(movies);
+  toggleMovieModalHandler();
+  clearMovieInputHandler();
 };
 
 startAddMovieBtn.addEventListener("click", toggleMovieModalHandler);

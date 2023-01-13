@@ -16,6 +16,15 @@ const updateUI = () => {
     : (entryTextSection.style.display = "none");
 };
 
+const toggleBackDrop = () => {
+  backDrop.classList.toggle("visible");
+};
+
+const cancelDeletion = () => {
+  toggleBackDrop();
+  deleteMovieModal.classList.remove("visible");
+};
+
 const deleteMovie = (movieId) => {
   let movieIndex = 0;
   for (const movie of movies) {
@@ -28,19 +37,21 @@ const deleteMovie = (movieId) => {
   const listRoot = document.getElementById("movie-list");
   listRoot.children[movieIndex].remove();
   //   listRoot.removeChild(listRoot.children[movieIndex]);
-};
-
-const cancelDeletion = () => {
-  toggleBackDrop();
-  deleteMovieModal.classList.remove("visible");
+  cancelDeletion();
+  updateUI();
 };
 
 const deleteMovieHandler = (movieId) => {
-  // const deleteMovieModal = document.getElementById("delete-movie");
   deleteMovieModal.classList.add("visible");
   toggleBackDrop();
   const cancelDeletionBtn = deleteMovieModal.querySelector(".btn--passive");
-  const confirmDeletionBtn = deleteMovieModal.querySelector(".btn--danger");
+  let confirmDeletionBtn = deleteMovieModal.querySelector(".btn--danger");
+
+  confirmDeletionBtn.replaceWith(confirmDeletionBtn.cloneNode(true));
+
+  confirmDeletionBtn = deleteMovieModal.querySelector(".btn--danger");
+
+  cancelDeletionBtn.removeEventListener("click", cancelDeletion);
   cancelDeletionBtn.addEventListener("click", cancelDeletion);
   confirmDeletionBtn.addEventListener("click", deleteMovie.bind(null, movieId));
 };
@@ -62,10 +73,6 @@ const renderNewMovie = (id, title, imgUrl, rating) => {
   listRoot.append(newMovieEl);
 };
 
-const toggleBackDrop = () => {
-  backDrop.classList.toggle("visible");
-};
-
 const closeMovieModal = () => {
   addMovieModal.classList.remove("visible");
 };
@@ -80,6 +87,7 @@ const backDropClickHandler = () => {
   // toggleMovieModalHandler();
   closeMovieModal();
   cancelDeletion();
+  clearMovieInputHandler();
 };
 
 const clearMovieInputHandler = () => {
@@ -91,6 +99,7 @@ const clearMovieInputHandler = () => {
 const cancelAddMovieHandler = () => {
   // toggleMovieModal();
   closeMovieModal();
+  toggleBackDrop();
   clearMovieInputHandler();
 };
 

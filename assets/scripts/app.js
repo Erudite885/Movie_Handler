@@ -5,8 +5,31 @@ const cancelAddMovieBtn = addMovieModal.querySelector(".btn--passive");
 const confirmAddMovieBtn = cancelAddMovieBtn.nextElementSibling;
 const userInputs = addMovieModal.querySelectorAll("input");
 // const userInputs = addMovieModal.getElementsByTagName('input');
+const entryTextSection = document.getElementById("entry-text");
 
 const movies = [];
+
+const updateUI = () => {
+  movies.length === 0
+    ? (entryTextSection.style.display = "block")
+    : (entryTextSection.style.display = "none");
+};
+
+const renderNewMovie = (title, imgUrl, rating) => {
+  const newMovieEl = document.createElement("li");
+  newMovieEl.className = "movie-element";
+  newMovieEl.innerHTML = `
+  <div class="movie-element__image">
+    <img src="${imgUrl}" alt='' />
+  </div>
+  <div class="movie-element__info">
+    <h2>${title}</h2>
+    <p>${rating}</p>
+  </div>
+  `;
+  const listRoot = document.getElementById("movie-list");
+  listRoot.append(newMovieEl);
+};
 
 const toggleBackDrop = () => {
   backDrop.classList.toggle("visible");
@@ -57,6 +80,8 @@ const addMovieHandler = () => {
   console.log(movies);
   toggleMovieModalHandler();
   clearMovieInputHandler();
+  renderNewMovie(newMovies.title, newMovies.img, newMovies.rating);
+  updateUI();
 };
 
 startAddMovieBtn.addEventListener("click", toggleMovieModalHandler);

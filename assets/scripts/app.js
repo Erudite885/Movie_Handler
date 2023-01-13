@@ -39,7 +39,10 @@ const deleteMovieHandler = (movieId) => {
   // const deleteMovieModal = document.getElementById("delete-movie");
   deleteMovieModal.classList.add("visible");
   toggleBackDrop();
-  // deleteMovie(movieId);
+  const cancelDeletionBtn = deleteMovieModal.querySelector(".btn--passive");
+  const confirmDeletionBtn = deleteMovieModal.querySelector(".btn--danger");
+  cancelDeletionBtn.addEventListener("click", cancelDeletion);
+  confirmDeletionBtn.addEventListener("click", deleteMovie.bind(null, movieId));
 };
 
 const renderNewMovie = (id, title, imgUrl, rating) => {

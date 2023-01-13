@@ -15,7 +15,20 @@ const updateUI = () => {
     : (entryTextSection.style.display = "none");
 };
 
-const renderNewMovie = (title, imgUrl, rating) => {
+const deleteMovieHandler = (movieId) => {
+  let movieIndex = 0;
+  for (const movie of movies) {
+    if (movie.id === movieId) {
+      break;
+    }
+    movieIndex++;
+  }
+  movies.splice(movieIndex, 1);
+  const listRoot = document.getElementById("movie-list");
+  listRoot.children[movieIndex].remove();
+};
+
+const renderNewMovie = (id, title, imgUrl, rating) => {
   const newMovieEl = document.createElement("li");
   newMovieEl.className = "movie-element";
   newMovieEl.innerHTML = `
@@ -27,6 +40,7 @@ const renderNewMovie = (title, imgUrl, rating) => {
     <p>${rating}</p>
   </div>
   `;
+  newMovieEl.addEventListener("click", deleteMovieHandler.bind(null, id));
   const listRoot = document.getElementById("movie-list");
   listRoot.append(newMovieEl);
 };
@@ -72,6 +86,7 @@ const addMovieHandler = () => {
   }
 
   const newMovies = {
+    id: Math.random().toString(),
     title: titleVal,
     img: imgUrlVal,
     rating: ratingVal,
@@ -80,7 +95,12 @@ const addMovieHandler = () => {
   console.log(movies);
   toggleMovieModalHandler();
   clearMovieInputHandler();
-  renderNewMovie(newMovies.title, newMovies.img, newMovies.rating);
+  renderNewMovie(
+    newMovies.id,
+    newMovies.title,
+    newMovies.img,
+    newMovies.rating
+  );
   updateUI();
 };
 
